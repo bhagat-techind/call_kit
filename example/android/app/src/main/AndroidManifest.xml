@@ -6,6 +6,10 @@
    <application
         android:label="call_kit_example"
         android:icon="@mipmap/ic_launcher">
+
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyDH7TaJkrvBmwMyzx4WCzY5EhvT996iTcg"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

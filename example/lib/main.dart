@@ -56,10 +56,61 @@ class _MyAppState extends State<MyApp> {
         ),
         body: InkWell(
           onTap: (){
-            Future.delayed(Duration(seconds: 5),(){
-              var payload = {"name":"Bhagat"};
-              _callKitPlugin.onRideRequest(payload);
-            });
+            var payload = {
+              "id": 70126,
+              "eventType": "REQUESTED",
+              "title": null,
+              "message": null,
+              "parameters": "{\"acceptanceExpiration\":1667982635086,\"acknowledgeExpiration\":1667982630086,\"eta\":365,\"stacked\":false}",
+              "ride": {
+                "id": 2247,
+                "status": "REQUESTED",
+                "rider": {
+                  "id": 7,
+                  "firstname": "Bhagat",
+                  "lastname": "Rider",
+                  "phoneNumber": "+917060825354",
+                  "email": "bhagatsingh9084@gmail.com",
+                  "rating": 4.68,
+                  "user": {
+                    "photoUrl": "https://ride-vegas.s3.amazonaws.com/user-photos/6bb43366-cb58-4908-bf16-18dbfa11f3d9.png"
+                  },
+                  "fullName": "Bhagat Rider"
+                },
+                "estimatedTimeArrive": 365,
+                "startLocationLat": 36.17827415860478,
+                "startLocationLong": -115.2433479577303,
+                "endLocationLat": 36.15431436476919,
+                "endLocationLong": -115.17451442778112,
+                "startAddress": "500 North Rainbow Boulevard",
+                "endAddress": "2411 Llewellyn Drive",
+                "start": {
+                  "address": "500 North Rainbow Boulevard"
+                },
+                "end": {
+                  "address": "2411 Llewellyn Drive"
+                },
+                "surgeFactor": 1.0,
+                "requestedCarType": {
+                  "title": "STANDARD",
+                  "carCategory": "REGULAR",
+                  "plainIconUrl": "https://media.ride-vegas.com/regular.png",
+                  "configuration": "{\"skipRideAuthorization\": false}"
+                },
+                "requestedDriverTypes": [],
+                "requestedDispatchType": "REGULAR",
+                "parameters": {
+                  "acceptanceExpiration": 1667982635086,
+                  "acknowledgeExpiration": 1667982630086,
+                  "eta": 365,
+                  "stacked": false
+                },
+                "driverPayment": null,
+                "freeCreditCharged": null,
+                "mapUrl": null
+              }
+            };
+            _callKitPlugin.onRideRequest(params: payload,durationInSec: 10 );
           },
           child: Center(
             child: Text('Running on: $_platformVersion\n'),

@@ -1,6 +1,7 @@
 <resources>
     <string name="title_activity_map">MapActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="destination_marker">Destination Marker</string>
+    <string name="next_ride_marker">Next Ride Marker</string>
+    <string name="pickup_marker">Pickup Marker</string>
 
 </resources>
