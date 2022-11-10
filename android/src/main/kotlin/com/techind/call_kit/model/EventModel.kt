@@ -2,6 +2,7 @@ package com.techind.call_kit.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class EventModel(
     @SerializedName("eventType")
@@ -16,4 +17,4 @@ data class EventModel(
     val ride: Ride,
     @SerializedName("title")
     val title: Any?
-)
+) : Serializable

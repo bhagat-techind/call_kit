@@ -2,6 +2,7 @@ package com.techind.call_kit.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Rider(
     @SerializedName("email")
@@ -20,4 +21,4 @@ data class Rider(
     val rating: Double,
     @SerializedName("user")
     val user: User
-)
+): Serializable

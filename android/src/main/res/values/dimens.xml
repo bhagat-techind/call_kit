@@ -2,4 +2,19 @@
 <resources>
     <dimen name="map_padding_for_marker">40dp</dimen>
     <dimen name="map_route_stroke_width">8dp</dimen>
+    <dimen name="size_1dp">1dp</dimen>
+    <dimen name="size_0.1dp">0.1dp</dimen>
+    <dimen name="size_2dp">2dp</dimen>
+    <dimen name="size_4dp">4dp</dimen>
+    <dimen name="size_5dp">5dp</dimen>
+    <dimen name="size_8dp">8dp</dimen>
+    <dimen name="size_10dp">10dp</dimen>
+    <dimen name="size_12dp">12dp</dimen>
+    <dimen name="size_14dp">14dp</dimen>
+    <dimen name="size_15dp">15dp</dimen>
+    <dimen name="size_16dp">16dp</dimen>
+    <dimen name="size_20dp">20dp</dimen>
+    <dimen name="size_40dp">40dp</dimen>
+    <dimen name="size_50dp">50dp</dimen>
+
 </resources>

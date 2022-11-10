@@ -2,6 +2,7 @@ package com.techind.call_kit.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Ride(
     @SerializedName("driverPayment")
@@ -44,4 +45,13 @@ data class Ride(
     val status: String,
     @SerializedName("surgeFactor")
     val surgeFactor: Double
-)
+) : Serializable
+{
+    fun isFemaleDriverRequest() : Boolean {
+      return  false
+    }
+
+    fun isDirectConnectRequest() : Boolean {
+      return  false
+    }
+}

@@ -3,5 +3,17 @@
     <string name="destination_marker">Destination Marker</string>
     <string name="next_ride_marker">Next Ride Marker</string>
     <string name="pickup_marker">Pickup Marker</string>
+    <string name="accept">Accept</string>
+    <string name="female_only">Female Driver</string>
+    <string name="no_mins">-- min</string>
+    <string name="zero_mins">&lt;1 min</string>
+    <string name="one_min">1 min</string>
+    <string name="many_mins">%d mins</string>
+    <plurals name="minutes_plural">
+        <item quantity="one">@string/one_min</item>
+        <item quantity="other">@string/many_mins</item>
+    </plurals>
+    <string name="direct_connect_request_car_type_w_surge">Direct Connect:\n%s</string>
+    <string name="direct_connect_request_car_type">Direct Connect: %s</string>
 
 </resources>

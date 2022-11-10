@@ -2,6 +2,7 @@ package com.techind.call_kit.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class RequestedCarType(
     @SerializedName("carCategory")
@@ -12,4 +13,4 @@ data class RequestedCarType(
     val plainIconUrl: String,
     @SerializedName("title")
     val title: String
-)
+) : Serializable

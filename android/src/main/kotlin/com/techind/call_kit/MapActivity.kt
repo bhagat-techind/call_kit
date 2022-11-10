@@ -1,6 +1,5 @@
 package com.techind.call_kit
 
-import android.R
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
@@ -8,13 +7,18 @@ import android.util.Log
 import android.util.TypedValue
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
+
 import com.techind.call_kit.databinding.ActivityMapBinding
+import com.techind.call_kit.fragment.PendingAcceptFragment
 import com.techind.call_kit.map.MapManager
+
 import com.techind.call_kit.model.EventModel
+import com.techind.call_kit.my_interface.MapFragmentInterface
 import io.flutter.plugin.common.MethodChannel.Result as FResult
 
 
@@ -22,7 +26,8 @@ import io.flutter.plugin.common.MethodChannel.Result as FResult
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-class MapActivity : AppCompatActivity(), OnMapReadyCallback,MapManager.MapDimensionsProvider {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback,
+    MapFragmentInterface.MapDimensionsProvider , MapFragmentInterface.MapPaddingListener, MapFragmentInterface.OnButtonClickListener{
 
     private lateinit var binding: ActivityMapBinding
 
@@ -30,9 +35,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,MapManager.MapDimens
     lateinit var eventModel:EventModel
     var durationInSec : Int = 5
     private var TAG = MapActivity::class.java.name
-    private val bottomPadding = 0
+    private var bottomPadding = 0
+    private var topPadding = 0
+
     private var actionBarHeight = 0
-    lateinit  var mapManager:MapManager
+    lateinit  var mapManager: MapManager
 
     companion object {
         @JvmStatic
@@ -55,14 +62,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,MapManager.MapDimens
         finish()
     }
 
-//    fun setFlutterResult(@NonNull flutterResult: Result){
-//        result = flutterResult
-//    }
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mapManager = MapManager(this,this)
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.mapView.onCreate(savedInstanceState)
@@ -81,6 +83,23 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,MapManager.MapDimens
 //        fullscreenContent.text = "${eventModel.ride.rider.fullName} request for ride to "+eventModel.ride.endAddress
 
     }
+
+    private fun showPendingAcceptFragment(create: Boolean = true) {
+        var fragment: PendingAcceptFragment? = null
+        val f: Fragment? = supportFragmentManager.findFragmentById(R.id.bottomPanel)
+        if (f is PendingAcceptFragment) {
+            fragment = f
+        } else if (create) {
+            fragment = PendingAcceptFragment()
+        }
+        fragment?.setMapPaddingListener(this)
+        fragment?.setButtonClickedListener(this)
+        fragment?.setRide(eventModel.ride)
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.bottomPanel, fragment!!)
+        transaction.commit()
+    }
+
 
     private fun setActionBarHeight(){
         val typedValue = TypedValue()
@@ -122,9 +141,18 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,MapManager.MapDimens
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        /** [binding.mapView.post] will execute after build UI otherwise [binding.mapView.width] & [binding.mapView.height] will return 0 */
+        binding.mapView.post {
+            mapManager = MapManager(this, this)
+            mapManager.setGoogleMap(googleMap)
+            mapManager.showRide(
+                null,
+                LatLng(eventModel.ride.startLocationLat, eventModel.ride.startLocationLong),
+                LatLng(eventModel.ride.endLocationLat, eventModel.ride.endLocationLong)
+            )
+            showPendingAcceptFragment(true)
+        }
 
-        mapManager.setGoogleMap(googleMap)
-        mapManager.showRide(null, LatLng(eventModel.ride.startLocationLat,eventModel.ride.startLocationLong),LatLng(eventModel.ride.endLocationLat,eventModel.ride.endLocationLong))
         googleMap.setOnMarkerClickListener { true }
 
         googleMap.setContentDescription("Description")
@@ -151,6 +179,34 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,MapManager.MapDimens
 
     override fun getMapBottomPadding(): Int {
         return bottomPadding
+    }
+
+    override fun onTopPaddingUpdated(value: Int) {
+        if (topPadding == value) {
+            return;
+        }
+        topPadding = value;
+        mapManager.updatePaddings()
+    }
+
+    override fun onBottomPaddingUpdated(value: Int) {
+        if (bottomPadding == value) {
+            return;
+        }
+        bottomPadding = value
+//        var lp : RelativeLayout.LayoutParams = binding.
+//         lp =(RelativeLayout.LayoutParams) binding . fabContainer . getLayoutParams ()
+//        if (lp == null) {
+//            lp =
+//                new RelativeLayout . LayoutParams ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//        }
+//        lp.bottomMargin = Math.max(value, int ViewUtils . dpToPixels 15)
+//        binding.fabContainer.setLayoutParams(lp)
+        mapManager.updatePaddings()
+    }
+
+    override fun onClicked(action: Int) {
+        Log.w(TAG,"onClicked ==>> $action")
     }
 
 

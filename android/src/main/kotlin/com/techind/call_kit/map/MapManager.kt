@@ -11,14 +11,15 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.techind.call_kit.R
+import com.techind.call_kit.my_interface.MapFragmentInterface
 import com.techind.call_kit.helper.ImageHelper
 
 
-class MapManager(context: Context, provider: MapDimensionsProvider) {
+class MapManager(context: Context, provider: MapFragmentInterface.MapDimensionsProvider) {
 
     private var googleMap: GoogleMap? = null
     private var context: Context? = null
-    private var provider: MapDimensionsProvider? = null
+    private var provider: MapFragmentInterface.MapDimensionsProvider? = null
     private var routeStrokeWidth = 0
     private var routeStrokeColor = 0
     private var paddingForMarker = 0
@@ -44,7 +45,7 @@ class MapManager(context: Context, provider: MapDimensionsProvider) {
         updatePaddings()
     }
 
-    private fun updatePaddings() {
+    public fun updatePaddings() {
         googleMap?.setPadding(0, provider!!.getMapTopPadding(), 0, provider!!.getMapBottomPadding())
     }
 
@@ -175,15 +176,4 @@ class MapManager(context: Context, provider: MapDimensionsProvider) {
         }
     }
 
-
-    /**
-     * Provides map dimensions and paddings.
-     * Used to calculate visible area for markers in order to prevent marker fall behind other ui items.
-     */
-    interface MapDimensionsProvider {
-        fun getMapWidth(): Int
-        fun getMapHeight(): Int
-        fun getMapTopPadding(): Int
-        fun getMapBottomPadding(): Int
-    }
 }
