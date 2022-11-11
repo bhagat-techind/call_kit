@@ -1,15 +1,19 @@
 <resources>
 
-    <style name="Theme.Android" parent="Theme.MaterialComponents.Light" />
+    <style name="Theme.Android" parent="Theme.MaterialComponents.Light.NoActionBar" />
 
     <style name="Theme.Android.Fullscreen" parent="Theme.Android">
         <item name="android:actionBarStyle">@style/Widget.Theme.Android.ActionBar.Fullscreen</item>
-        <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@null</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="ThemeOverlay.Android.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenBackgroundColor">@color/white</item>
+        <item name="titleTextColor">@color/black_overlay</item>
+        <item name="windowActionBar">false</item>
         <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
 </resources>

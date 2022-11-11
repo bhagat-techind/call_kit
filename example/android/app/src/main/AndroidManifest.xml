@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.techind.call_kit_example">
+    <uses-permission android:name="android.permission.INTERNET" />
     <!--        android:name="${applicationName}"-->
     <!--        tools:replace="android:name"-->
    <application

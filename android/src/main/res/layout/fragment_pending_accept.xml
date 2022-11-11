@@ -47,12 +47,11 @@
             android:layout_margin="@dimen/size_5dp"
             android:gravity="center">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/rider_avatar"
                 android:layout_width="@dimen/size_50dp"
                 android:layout_height="@dimen/size_50dp"
                 android:layout_marginRight="@dimen/size_8dp"
-                android:src="@{viewModel.avatar}"
                 tools:src="@drawable/ic_user_icon" />
 
             <TextView
@@ -117,7 +116,7 @@
                     android:text="@{viewModel.categoryName}"
                     android:textAllCaps="true"
                     android:textColor="@android:color/black"
-                    android:textSize="@{viewModel.categoryFontSize}"
+                    android:textSize="20sp"
                     tools:drawableLeft="@drawable/nav_direct_connect"
                     tools:text="Direct Connect:\nRegular" />
 
@@ -129,7 +128,7 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:background="@android:color/darker_gray"
-                android:visibility='@{viewModel.isSurge?0:1}'
+                android:visibility="@{viewModel.isSurgeVisible}"
 
                 tools:visibility="invisible" />
 
@@ -138,7 +137,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:visibility='@{viewModel.isSurge?0:1}'
+                android:visibility="@{viewModel.isSurgeVisible}"
                 tools:visibility="visible">
 
                 <TextView
@@ -175,8 +174,8 @@
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"
-                android:background="@{viewModel.buttonLeft}"
-                tools:background="@drawable/rounded_pink_button_left"
+                android:background="@drawable/rounded_green_button_left"
+                tools:background="@drawable/rounded_green_button_left"
                 tools:text="10" />
 
 
@@ -187,8 +186,8 @@
                 android:layout_toEndOf="@+id/counter_text"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:background="@{viewModel.buttonRight}"
-                tools:background="@drawable/rounded_pink_button_right">
+                android:background="@drawable/rounded_green_button_right"
+                tools:background="@drawable/rounded_green_button_right">
 
                 <TextView
                     style="@style/RATextView.MontserratRegular"
@@ -208,7 +207,6 @@
                     android:text="@string/female_only"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white"
-                    android:visibility='@{viewModel.isFemale?0:1}'
                     tools:visibility="visible" />
             </LinearLayout>
 

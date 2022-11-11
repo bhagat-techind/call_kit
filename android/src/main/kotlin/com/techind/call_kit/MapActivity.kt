@@ -5,6 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -12,11 +17,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
-
 import com.techind.call_kit.databinding.ActivityMapBinding
 import com.techind.call_kit.fragment.PendingAcceptFragment
 import com.techind.call_kit.map.MapManager
-
 import com.techind.call_kit.model.EventModel
 import com.techind.call_kit.my_interface.MapFragmentInterface
 import io.flutter.plugin.common.MethodChannel.Result as FResult
@@ -76,7 +79,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         Log.w(TAG,"durationInSec ==>> $durationInSec")
 
         Log.w("MapActivity","==>> ${payload}")
+
+
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.title = "New Ride Request"
+        binding.toolbar.inflateMenu(R.menu.button_menu)
         setActionBarHeight()
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -95,6 +103,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         fragment?.setMapPaddingListener(this)
         fragment?.setButtonClickedListener(this)
         fragment?.setRide(eventModel.ride)
+        fragment?.setDuration(durationInSec)
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.bottomPanel, fragment!!)
         transaction.commit()
@@ -111,8 +120,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         Log.w(TAG,"onPostCreate durationInSec ==>> $durationInSec")
-        /// FIXME Uncomment this line
-//        delayedHide(durationInSec)
+        delayedHide(durationInSec)
     }
     /**
      * Schedules a call to hide() in [delaySec], canceling any
@@ -207,7 +215,26 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onClicked(action: Int) {
         Log.w(TAG,"onClicked ==>> $action")
+        result.success(action)
+        finish()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.button_menu,menu)
+        val menuItem = menu.findItem(R.id.menuAction)
+        val button = menuItem.actionView!!.findViewById<View>(R.id.button) as Button
+        button.text = "Decline"
+        button.setOnClickListener {  onOptionsItemSelected(menuItem) }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menuAction -> {
+                onClicked(2)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 }

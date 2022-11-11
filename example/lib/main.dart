@@ -110,7 +110,9 @@ class _MyAppState extends State<MyApp> {
                 "mapUrl": null
               }
             };
-            _callKitPlugin.onRideRequest(params: payload,durationInSec: 10 );
+            _callKitPlugin.onRideRequest(params: payload,durationInSec: 10 ).then((value) {
+              print("onRideRequest ===>> $value");
+            });
           },
           child: Center(
             child: Text('Running on: $_platformVersion\n'),
