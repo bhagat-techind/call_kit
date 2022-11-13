@@ -1,5 +1,6 @@
 package com.techind.call_kit
 
+import android.os.PowerManager
 import android.util.Log
 import androidx.multidex.MultiDexApplication
 
@@ -19,4 +20,15 @@ class MyApplication : MultiDexApplication() {
         instance = this
         Log.w("MyApplication","==>> onCreate called")
     }
+
+    fun wakeLockRequest(duration: Int) {
+
+        val pm = getInstance().getSystemService(POWER_SERVICE) as PowerManager
+        val wakeLock = pm.newWakeLock(
+            PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.FULL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+            "Callkit:PowerManager"
+        )
+        wakeLock.acquire((duration + 3).toLong())
+    }
+
 }

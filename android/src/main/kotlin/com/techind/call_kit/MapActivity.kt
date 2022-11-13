@@ -1,14 +1,17 @@
 package com.techind.call_kit
 
 import android.annotation.SuppressLint
+import android.app.KeyguardManager
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.PowerManager
 import android.util.Log
 import android.util.TypedValue
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Button
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
@@ -90,6 +93,54 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         // Set up the user interaction to manually show or hide the system UI.
 //        fullscreenContent.text = "${eventModel.ride.rider.fullName} request for ride to "+eventModel.ride.endAddress
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            setTurnScreenOn(true)
+            setShowWhenLocked(true)
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+        }
+        transparentStatusAndNavigation()
+        MyApplication.getInstance().wakeLockRequest(durationInSec)
+    }
+
+    private fun transparentStatusAndNavigation() {
+        setWindowFlag((WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION), false)
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
+    }
+
+    private fun setWindowFlag(bits: Int, on: Boolean) {
+        val win: Window = window
+        val winParams: WindowManager.LayoutParams = win.attributes
+        if (on) {
+            winParams.flags = winParams.flags or bits
+        } else {
+            winParams.flags = winParams.flags and bits.inv()
+        }
+        win.attributes = winParams
+    }
+
+    private fun onAcceptClick() {
+        var packageName = packageName
+        Log.w(TAG,"packageName ==>> $packageName")
+        val intent = packageManager.getLaunchIntentForPackage(packageName)?.cloneFilter()
+        if (isTaskRoot) {
+            intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        } else {
+            intent?.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+        if (intent != null) {
+            startActivity(intent)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            keyguardManager.requestDismissKeyguard(this, null)
+        }
+        finishAndRemoveTask()
     }
 
     private fun showPendingAcceptFragment(create: Boolean = true) {
@@ -108,7 +159,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         transaction.replace(R.id.bottomPanel, fragment!!)
         transaction.commit()
     }
-
 
     private fun setActionBarHeight(){
         val typedValue = TypedValue()
@@ -215,6 +265,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onClicked(action: Int) {
         Log.w(TAG,"onClicked ==>> $action")
+        if(action==1) onAcceptClick()
         result.success(action)
         finish()
     }

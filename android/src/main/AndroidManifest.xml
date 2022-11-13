@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!--   AIzaSyDH7TaJkrvBmwMyzx4WCzY5EhvT996iTcg   -->
 
@@ -16,7 +19,10 @@
             android:name=".MapActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_map"
+            android:showOnLockScreen="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.Android.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
