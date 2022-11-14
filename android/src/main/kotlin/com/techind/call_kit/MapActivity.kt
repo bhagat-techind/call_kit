@@ -25,6 +25,7 @@ import com.techind.call_kit.fragment.PendingAcceptFragment
 import com.techind.call_kit.map.MapManager
 import com.techind.call_kit.model.EventModel
 import com.techind.call_kit.my_interface.MapFragmentInterface
+import com.techind.call_kit.player.MyPlayer
 import io.flutter.plugin.common.MethodChannel.Result as FResult
 
 
@@ -46,6 +47,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
 
     private var actionBarHeight = 0
     lateinit  var mapManager: MapManager
+    var myPlayer : MyPlayer? = null
 
     companion object {
         @JvmStatic
@@ -170,6 +172,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         Log.w(TAG,"onPostCreate durationInSec ==>> $durationInSec")
+        myPlayer = MyPlayer()
+        myPlayer?.playMySound()
         delayedHide(durationInSec)
     }
     /**
@@ -195,6 +199,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onDestroy() {
         hideHandler.removeCallbacks(hideRunnable)
         binding.mapView.onDestroy()
+        myPlayer?.stopPlayer()
         super.onDestroy()
     }
 
