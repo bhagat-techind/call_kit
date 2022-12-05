@@ -60,7 +60,7 @@ class CallKitPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     val payloadData : String = Gson().toJson(data["payload"])
     val durationInSec : Int = (data["duration"]?:10) as Int
     MapActivity.setFlutterResult(result)
-
+    Log.w(TAG, "onRide ==>> $payloadData")
     val intent = Intent(MyApplication.getInstance().applicationContext, MapActivity::class.java)
     intent.putExtra("payload", payloadData)
     intent.putExtra("duration", durationInSec)

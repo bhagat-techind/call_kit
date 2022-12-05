@@ -10,6 +10,11 @@ class MockCallKitPlatform
 
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  Future<int?> onRideRequest({required Map<String, dynamic> params, int durationInSec = 10}) {
+    return Future(() => 2);
+  }
 }
 
 void main() {
